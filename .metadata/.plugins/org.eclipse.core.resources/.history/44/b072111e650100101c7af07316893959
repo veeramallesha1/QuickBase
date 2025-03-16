@@ -1,0 +1,10 @@
+{
+	"UXP-1121":{
+		"tablesColumnsNames":"Table,Fields,Related To",
+		"dailyOptions":"Last 7 Days,Last 30 Days,Custom (max 90 days)"
+	},
+	"UXP-1122":{
+		"ddOptions":"One,Two,Three,Four",
+		"errorMessage":"No turbine control command has been executed in the selected time frame"
+	}
+}

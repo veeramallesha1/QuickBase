@@ -1,0 +1,49 @@
+package utils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class PropertyHelper {
+	
+	
+	 private static final String JSON_FILE_PATH = System.getProperty("user.dir")+"src//main//resources//data//labels.json"; // Update path if needed
+
+	    // Method to load resource file based on pageName
+	 /*   public static JsonNode loadResourcefile(String url, String pageName) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            JsonNode rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
+	            return rootNode.path(pageName); // Return only the section related to pageName
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            return null; // Return null in case of failure
+	        }
+	    } */
+	 
+	 public static Map<String, String> loadResourcefile(String url, String pageName) {
+	        Map<String, String> resourceMap = new HashMap<>();
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            JsonNode rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
+
+	            // Get only the relevant section (e.g., "TablesPage" or "AnalyzePage")
+	            JsonNode pageNode = rootNode.path(pageName);
+
+	            // Convert JSON Node to Map<String, String>
+	            Iterator<Map.Entry<String, JsonNode>> fields = pageNode.fields();
+	            while (fields.hasNext()) {
+	                Map.Entry<String, JsonNode> field = fields.next();
+	                resourceMap.put(field.getKey(), field.getValue().asText());
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return resourceMap;
+	    }
+}

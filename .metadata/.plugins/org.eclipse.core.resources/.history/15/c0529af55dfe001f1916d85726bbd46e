@@ -1,0 +1,29 @@
+package stepDefinitions;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+
+public class StepDefinitions {
+	WebDriver driver;
+	
+	@Given("user  in table page")
+	public void user_in_table_page() {
+	    
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\Leovon\\Downloads\\chromedriver-win64/chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.get("https://team.quickbase.com/nav/app/bux9zecvh/action/AppTablesList");
+		driver.findElement(By.id("tablesSearch")).sendKeys("tab");
+
+		
+		
+	}
+	@Then("verify the all lables present in table page")
+	public void verify_the_all_lables_present_in_table_page() {
+		driver.findElement(By.cssSelector("a.HasAutoTip")).click();
+	}
+
+}

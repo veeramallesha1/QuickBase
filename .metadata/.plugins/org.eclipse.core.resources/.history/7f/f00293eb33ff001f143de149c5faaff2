@@ -1,0 +1,66 @@
+package stepDefinitions;
+
+import java.awt.Window;import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.text.Document;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import utils.TestContextSetup;
+
+public class StepDefinitions {
+	public WebDriver driver;
+	TestContextSetup textContextSetup;
+	
+	public StepDefinitions(TestContextSetup textContextSetup) {
+		
+		this.textContextSetup = textContextSetup;
+	}
+	@Given("user  in table page")
+	public void user_in_table_page() throws InterruptedException {
+	    
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\Leovon\\Downloads\\chromedriver-win64/chromedriver.exe");
+		textContextSetup.driver = new ChromeDriver();
+		textContextSetup.driver.manage().window().maximize();
+		textContextSetup.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		textContextSetup.driver.get("https://team.quickbase.com/nav/app/bux9zecvh/action/AppTablesList");
+		textContextSetup.driver.findElement(By.id("quickbaseSignin")).click();
+		textContextSetup.driver.findElement(By.id("loginMsgDiv")).click();
+		textContextSetup.driver.findElement(By.xpath("//input[@type='text' and @name='loginid']")).sendKeys("veeramalleshacn@gmail.com");
+		textContextSetup.driver.findElement(By.xpath("//input[@type='password' and @name='password']")).sendKeys("Denmark@2025");
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		textContextSetup.driver.findElement(By.xpath("//button[@type='submit' and @id='signin']")).click();
+		
+		Thread.sleep(15000);
+		textContextSetup.driver.findElement(By.id("RememberDevice")).click();
+		textContextSetup.driver.findElement(By.xpath("//button[@type='submit' and @id='signin']")).click();
+		Thread.sleep(3000);
+		
+		
+	}
+	@Then("verify the all lables present in table page")
+	public void verify_the_all_lables_present_in_table_page() throws InterruptedException {
+		Thread.sleep(2000);
+		textContextSetup.driver.findElement(By.id("appTablesListToolbar")).getText().trim();
+	//	driver.get(driver.getCurrentUrl());
+		//String tableHeader = driver.findElement(By.cssSelector("div.FS-H1.Tipsified")).getText().trim();
+		String newTable = textContextSetup.driver.findElement(By.cssSelector("span.Text")).getText().trim();
+		String alertMsg = textContextSetup.driver.findElement(By.cssSelector("div.AlertMessageDiv")).getText().trim();
+		String searchBox = textContextSetup.driver.findElement(By.id("tablesSearch")).getDomAttribute("placeholder");
+		
+		//System.out.println(tableHeader);
+		System.out.println(newTable);
+		System.out.println(alertMsg);
+		System.out.println(searchBox);
+		
+		
+		
+	}
+
+}

@@ -1,0 +1,90 @@
+package utils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class PropertyHelper {
+	
+	
+	 private static final String JSON_FILE_PATH = System.getProperty("user.dir")+"//src//main//resources//data//labels.json"; // Update path if needed
+	 private static final String TEST_DATA_FILE_PATH = System.getProperty("user.dir")+"//src//test//resources//testData.json"; // Update if needed
+	    // Method to load resource file based on pageName
+	 /*   public static JsonNode loadResourcefile(String url, String pageName) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            JsonNode rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
+	            return rootNode.path(pageName); // Return only the section related to pageName
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            return null; // Return null in case of failure
+	        }
+	    } */
+	 
+	 public static Map<String, String> loadResourcefile(String url, String pageName) {
+	        Map<String, String> resourceMap = new HashMap<>();
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            JsonNode rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
+	            System.out.println("✅ JSON File Loaded Successfully!");
+	            
+	            if (!rootNode.has(pageName)) {
+	                System.out.println("❌ Page name not found in JSON: " + pageName);
+	                return resourceMap; // Return empty map
+	            }
+
+	            // Get only the relevant section (e.g., "TablesPage" or "AnalyzePage")
+	            JsonNode pageNode = rootNode.path(pageName);
+
+	            // Convert JSON Node to Map<String, String>
+	            Iterator<Map.Entry<String, JsonNode>> fields = pageNode.fields();
+	            while (fields.hasNext()) {
+	                Map.Entry<String, JsonNode> field = fields.next();
+	                resourceMap.put(field.getKey(), field.getValue().asText());
+	            }
+	        } catch (IOException e) {
+	        	System.out.println("❌ Error loading JSON file: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	        return resourceMap;
+	    }
+	 
+	 
+
+	    // Read test data from JSON based on the key (e.g., "UXP-1121") and return as Map
+	    public static Map<String, String> readTestDataJson(String testCaseId) {
+	        Map<String, String> dataMap = new HashMap<String, String>();
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            JsonNode rootNode = objectMapper.readTree(new File(TEST_DATA_FILE_PATH));
+
+	            System.out.println("✅ testData.json Loaded Successfully!");
+
+	            // Check if the test case ID exists in JSON
+	            if (!rootNode.has(testCaseId)) {
+	                System.out.println("❌ Test Case ID not found in JSON: " + testCaseId);
+	                return dataMap; // Return empty map
+	            }
+
+	            // Get the data for the specific test case ID
+	            JsonNode testDataNode = rootNode.path(testCaseId);
+
+	            // Convert JSON Node to Map<String, String>
+	            Iterator<Map.Entry<String, JsonNode>> fields = testDataNode.fields();
+	            while (fields.hasNext()) {
+	                Map.Entry<String, JsonNode> field = fields.next();
+	                dataMap.put(field.getKey(), field.getValue().asText());
+	                System.out.println("🔹 Loaded Key: " + field.getKey() + " | Value: " + field.getValue().asText());
+	            }
+	        } catch (IOException e) {
+	            System.out.println("❌ Error loading testData.json: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	        return dataMap;
+	    }
+}

@@ -1,0 +1,95 @@
+package pageObjects;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
+import utils.PropertyHelper;
+
+public class TablesPage{
+
+	/*
+	 * @FindBy(id="quickbaseSignin") public WebElement btnNo;
+	 * 
+	 * @FindBy(id="quickbaseSignin") public WebElement lblSignMsg;
+	 * 
+	 * @FindBy(xpath="//input[@type='text' and @name='loginid']") public WebElement
+	 * txtUserName;
+	 * 
+	 * @FindBy(xpath="//input[@type='password' and @name='password']") public
+	 * WebElement txtPassword;
+	 * 
+	 * @FindBy(xpath="//button[@type='submit' and @id='signin']") public WebElement
+	 * btnSignIn;
+	 * 
+	 * @FindBy(id="RememberDevice") public WebElement chkRememberMe;
+	 * 
+	 * @FindBy(css="span.Text") public WebElement lblNewTableCreate;
+	 * 
+	 * @FindBy(css="div.AlertMessageDiv") public WebElement txtAlertMsg;
+	 * 
+	 * @FindBy(id="tablesSearch") public WebElement txtSearchTable;
+	 */
+
+	public WebDriver driver;
+
+	private By btnNo = By.id("quickbaseSignin");
+	private By lblSignMsg = By.id("loginMsgDiv");
+	private By txtUserName = By.xpath("//input[@type='text' and @name='loginid']");
+	private By txtPassword = By.xpath("//input[@type='password' and @name='password']");
+	private By btnSignIn = By.xpath("//button[@type='submit' and @id='signin']");
+	private By chkRememberMe = By.id("RememberDevice");
+	
+	private By lblTableBox = By.id("appTablesListToolbar");
+	private By lblNewTable = By.cssSelector("span.Text");
+	private By lblalertMsg = By.cssSelector("div.AlertMessageDiv");
+	private By txtsearchBox = By.id("tablesSearch");
+	
+	HashMap<String, Boolean> results = new HashMap<String, Boolean>();
+	public static Map<String, String> resourceMap = null;
+    private String pageName;
+
+	public TablesPage(WebDriver driver) {
+		 this.pageName = "TablesPage";
+		 System.out.println("🔹 Initializing TablesPage...");
+	     this.resourceMap = PropertyHelper.loadResourcefile(driver.getCurrentUrl(), pageName);
+	     System.out.println("✅ Loaded resourceMap: " + resourceMap);
+		this.driver = driver;
+	}
+
+	public void userInTablePage() throws InterruptedException {
+	
+		driver.findElement(btnNo).click();
+		driver.findElement(lblSignMsg).click();
+		driver.findElement(txtUserName).sendKeys("veeramalleshacn@gmail.com");
+		driver.findElement(txtPassword).sendKeys("Denmark@2025");
+		driver.findElement(btnSignIn).click();
+
+		Thread.sleep(15000);
+		driver.findElement(chkRememberMe).click();
+		driver.findElement(btnSignIn).click();
+		Thread.sleep(3000);
+	
+	}
+
+	public HashMap<String, Boolean> verifyTheAllLablesPresentITablePage() throws InterruptedException {
+		Map<String, String> dataMap = HomePage.readTestDataJson("UXP-22628");
+		driver.findElement(lblTableBox).click();
+		String newTable = driver.findElement(lblNewTable).getText().trim();
+		String alertMsg = driver.findElement(lblalertMsg).getText().trim();
+		String searchBox = driver.findElement(txtsearchBox).getDomAttribute("placeholder");
+		
+		results.put("NewTableIcon", newTable.equalsIgnoreCase(resourceMap.get("newTable")));
+		results.put("AlertMessage", alertMsg.equalsIgnoreCase(resourceMap.get("alertMsg")));
+		results.put("SerchBox", searchBox.equalsIgnoreCase(resourceMap.get("searchTables")));
+		System.out.println(results);
+		
+		return results;
+		
+	}
+
+}

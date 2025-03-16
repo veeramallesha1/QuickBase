@@ -1,0 +1,18 @@
+package utils;
+
+import org.openqa.selenium.WebDriver;
+
+import pageObjects.HomePage;
+
+public class TestContextSetup {
+	
+	public WebDriver driver;
+	public HomePage homePage;
+	
+	public TestContextSetup() {
+		
+		homePage = new HomePage(driver);
+		
+	}
+
+}

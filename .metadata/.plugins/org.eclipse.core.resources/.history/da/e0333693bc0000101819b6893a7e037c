@@ -1,0 +1,24 @@
+package utils;
+
+import java.io.File;
+import java.io.IOException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class PropertyHelper {
+	
+	
+	 private static final String JSON_FILE_PATH = System.getProperty("user.dir")+"src//main//resources//data//labels.json"; // Update path if needed
+
+	    // Method to load resource file based on pageName
+	    public static JsonNode loadResourcefile(String url, String pageName) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            JsonNode rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
+	            return rootNode.path(pageName); // Return only the section related to pageName
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            return null; // Return null in case of failure
+	        }
+	    }
+}

@@ -1,0 +1,30 @@
+package utils;
+
+public interface IConstants {
+	
+	public static String FEATURE_PASS = "FEATURE_PASS";	
+	public static String FEATURE_FAIL = "FEATURE_FAIL";	
+	public static String FEATURE_SKIP = "FEATURE_SKIP";
+
+	public static String SCENERIO_PASS = "SCENERIO_PASS";
+	public static String SCENERIO_FAIL = "SCENERIO_FAIL";
+	public static String SCENERIO_SKIP = "SCENERIO_SKIP";
+
+	public static String STEPS_PASS = "STEPS_PASS";
+	public static String STEPS_FAIL = "STEPS_FAIL";
+	public static String STEPS_SKIP = "STEPS_SKIP";
+
+	public int intMaxWaitTime = 60;
+	public int intExtraMaxWaitTime = 120;
+	public int intAvgWaitTime = 30;
+	public int intMinWaitTime = 20;
+	public int intGenerateReportWaitTime = 300;
+
+	public static String Vx_MetricsOilPressure ="hydr-oil_pressure-avg.na.10m";
+	public static String Vx_MetricsOilTemp ="hydr-oil_temp-avg.na.10m";
+	public static String Vx_MetricsGenration10m ="generation.na.10m";
+	public static String Vx_MetricsCF10m ="cf.na.10m";
+	public static String Vx_MetricsMA10m ="ma.na.10m";
+	public static String Vx_GetEventsTypeLive ="live";
+
+}

@@ -1,0 +1,41 @@
+package stepDefinitions;
+
+import java.util.LinkedHashMap;
+
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+import io.cucumber.java.be.I.Is;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import pageObjects.HomePage;
+import pageObjects.TablesPage;
+import utils.TestContextSetup;
+
+public class StepDefinitions {
+	public WebDriver driver;
+	TestContextSetup textContextSetup;
+	HomePage homePage;
+	TablesPage tablesPage;
+	LinkedHashMap<String, Boolean> results = new LinkedHashMap<String, Boolean>();
+	
+	public StepDefinitions(TestContextSetup textContextSetup) {
+		
+		this.textContextSetup = textContextSetup;
+	}
+	@Given("^User In Table Page$")
+	public void userInTablePage() throws InterruptedException {
+		tablesPage = textContextSetup.homePage.getTablesPage();
+		tablesPage.userInTablePage();	
+		
+	}
+	@Then("^Verify The All Lables Present In Table Page")
+	public void verifyTheAllLablesPresentITablePage() throws InterruptedException {
+		tablesPage= textContextSetup.homePage.getTablesPage();
+		results = tablesPage.verifyTheAllLablesPresentITablePage();	
+		Assert.assertNotEquals(results.containsValue(true), true);
+		
+	}
+	
+
+}

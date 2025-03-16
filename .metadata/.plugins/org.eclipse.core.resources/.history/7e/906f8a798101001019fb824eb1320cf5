@@ -1,0 +1,174 @@
+package pageObjects;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import utils.PropertyHelper;
+import utils.SeleniumHelper;
+
+public class TablesPage {
+
+	@FindBy(id = "quickbaseSignin")
+	public WebElement btnNo;
+
+	@FindBy(id = "quickbaseSignin")
+	public WebElement lblSignMsg;
+
+	@FindBy(xpath = "//input[@type='text' and @name='loginid']")
+	public WebElement txtUserName;
+
+	@FindBy(xpath = "//input[@type='password' and @name='password']")
+	public WebElement txtPassword;
+
+	@FindBy(xpath = "//button[@type='submit' and @id='signin']")
+	public WebElement btnSignIn;
+
+	@FindBy(id = "RememberDevice")
+	public WebElement chkRememberMe;
+
+	@FindBy(css = "span.Text")
+	public WebElement lblNewTableCreate;
+
+	@FindBy(css = "div.AlertMessageDiv")
+	public WebElement txtAlertMsg;
+
+	@FindBy(id = "tablesSearch")
+	public WebElement txtSearchTable;
+
+	@FindBy(id = "appTablesListToolbar")
+	public WebElement lblTableBox;
+	
+	@FindBy(id = "appTablesListTable_label")
+	public WebElement lblTable;
+	
+	@FindBy(id = "appTablesListTable_numFields")
+	public WebElement lblFields;
+	
+	@FindBy(id = "appTablesListTable_relNames")
+	public WebElement lblRelatedTo;
+	
+	@FindBy(xpath = "//div[@id='tableFromscratch' and @class='fromscratch']")
+	public List<WebElement> lblFromScratch;
+	
+	@FindBy(xpath = "//div[@id='tableFromDataConn' and @class='fromDataConn']")
+	public List<WebElement> lblUsingConnected;
+	
+	@FindBy(xpath ="//a[@data-tipped='next']")
+	public WebElement lnkTableName;
+	
+	@FindBy(xpath ="//a[@class='RowAction Delete Icon']")
+	public WebElement icnDeleteTable;
+	
+	@FindBy(id ="typeYesField")
+	public WebElement txtDeleteMsg;
+	
+	@FindBy(css ="#dialogDeleteTable button")
+	public List<WebElement> deletePopButtons;
+
+
+	private WebDriver driver;
+	HashMap<String, Boolean> results = new HashMap<String, Boolean>();
+	public static Map<String, String> resourceMap = null;
+	private String pageName;
+	private SeleniumHelper seleniumHelper;
+
+	public TablesPage(WebDriver driver) {
+		this.driver = driver;
+		this.seleniumHelper = new SeleniumHelper(driver);
+		this.pageName = "TablesPage";
+		this.resourceMap = PropertyHelper.loadResourcefile(driver.getCurrentUrl(), pageName);
+		PageFactory.initElements(driver, this);
+
+	}
+
+	public void userInTablePage() throws Exception {
+		seleniumHelper.click(btnNo);
+		seleniumHelper.click(lblSignMsg);
+		seleniumHelper.sendKeysTo(txtUserName, "veeramalleshacn@gmail.com");
+		seleniumHelper.sendKeysTo(txtPassword, "Denmark@2025");
+		seleniumHelper.click(btnSignIn);
+		seleniumHelper.sleepWait(15);
+		seleniumHelper.click(chkRememberMe);
+		seleniumHelper.click(btnSignIn);
+		seleniumHelper.sleepWait(3);
+
+	}
+
+	public HashMap<String, Boolean> verifyTheAllLablesPresentITablePage() throws Exception {
+		Map<String, String> dataMap = PropertyHelper.readTestDataJson("UXP-1121");
+		seleniumHelper.click(lblTableBox);
+		String newTable = lblNewTableCreate.getText().trim();
+		String alertMsg = txtAlertMsg.getText().trim();
+		String searchBox = txtSearchTable.getDomAttribute("placeholder");
+
+		results.put("NewTableIcon", newTable.equalsIgnoreCase(resourceMap.get("newTable")));
+		results.put("AlertMessage", alertMsg.equalsIgnoreCase(resourceMap.get("alertMsg")));
+		results.put("SerchBox", searchBox.equalsIgnoreCase(resourceMap.get("searchTables")));
+		System.out.println(results);
+		
+
+		return results;
+
+	}
+	
+	public HashMap<String, Boolean> verifyColumnsHeaderOfTheTablePage() throws Exception {
+		Map<String, String> dataMap = PropertyHelper.readTestDataJson("UXP-1121");
+		ArrayList<String> actualColumnsNames = new ArrayList<String>();
+		actualColumnsNames.add(lblTable.getText().trim());
+		actualColumnsNames.add(lblFields.getText().trim());
+		actualColumnsNames.add(lblRelatedTo.getText().trim());
+		List<String> expectedColumnsNames = Arrays.asList(dataMap.get("tablesColumnsNames").split(","));
+		System.out.println(actualColumnsNames);
+		System.out.println(expectedColumnsNames);
+		results.put("ColumnsNames", actualColumnsNames.equals(expectedColumnsNames));
+		System.out.println(results);
+
+		return results;
+
+	}
+	
+	public HashMap<String, Boolean> verifyDropdownOptionsOfNewTable() throws Exception {
+		seleniumHelper.sleepWait(3);
+		seleniumHelper.click(txtAlertMsg);
+		seleniumHelper.click(lblNewTableCreate);
+		seleniumHelper.sleepWait(2);
+		String[] fromScrath = lblFromScratch.get(1).getText().split("\\n");
+		String[] usingConnected = lblUsingConnected.get(1).getText().split("\\n");
+		results.put("FromScratch", fromScrath[0].equalsIgnoreCase(resourceMap.get("fromScratch")));
+		results.put("DesignYourTable", fromScrath[1].equalsIgnoreCase(resourceMap.get("designYourOwnTable")));
+		results.put("UsingConnected", usingConnected[0].equalsIgnoreCase(resourceMap.get("usingConnected")));
+		results.put("Connected", usingConnected[1].equalsIgnoreCase(resourceMap.get("connected")));
+		System.out.println(results);
+		return results;
+
+	}
+	
+	public HashMap<String, Boolean> verifyTheSearchFunctionalityInNewTable() throws Exception {
+		String tableName=resourceMap.get("tableName");
+		
+		seleniumHelper.sleepWait(3);
+		seleniumHelper.click(txtAlertMsg);
+		seleniumHelper.sendKeysTo(txtSearchTable, tableName);
+		
+		seleniumHelper.sleepWait(5);
+		Actions actions = new Actions(driver);
+		actions.moveToElement(lnkTableName).perform();
+		actions.click(lnkTableName);
+	//	seleniumHelper.sleepWait(29);
+		String actualTable = lnkTableName.getText();
+		results.put("TableSearch", tableName.equalsIgnoreCase(actualTable));
+		System.out.println(results);
+		return results;
+
+	}
+
+}

@@ -1,0 +1,21 @@
+package pageObjects;
+
+import java.util.Map;
+
+import org.openqa.selenium.WebDriver;
+
+public class HomePage {
+	
+	public TablesPage tablesPage;
+	public WebDriver driver;
+	
+	public HomePage(WebDriver driver) {
+		this.driver = driver;
+	}
+	
+	public TablesPage getTablesPage() {
+		
+		return tablesPage = new TablesPage(driver);
+	}
+	
+}

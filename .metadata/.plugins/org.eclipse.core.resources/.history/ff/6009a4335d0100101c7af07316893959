@@ -1,0 +1,14 @@
+
+Feature: Verify the Table feature functionalities
+ 
+	@TablesPage @Regression @Medium @UI
+  Scenario: Verify All The Lables Present In Table HomePage
+    Given User In Table Page
+    Then Verify The All Lables Present In Table Page
+    
+    Scenario: Verify Columns Header Of The Table Page
+    Given User In Table Page
+    Then Verify Columns Header Of The Table Page
+  
+
+

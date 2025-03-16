@@ -1,0 +1,31 @@
+package utils;
+
+import java.util.Map;
+
+import org.openqa.selenium.WebDriver;
+
+public class GenericUtils {
+	
+	public WebDriver driver;
+	
+	public GenericUtils(WebDriver driver) {
+		
+		this.driver = driver;
+		
+	}
+	
+	public void selectDropdownHandling() {
+		//write code here
+	}
+	
+	public static Map<String, String> loadResourcefile(String pageName) throws Exception {
+
+		Map<String, String> dataMap = null;
+	
+		
+			dataMap = PropertyHelper.readJsonElement("en.json", pageName);
+			
+		return dataMap;
+	}
+
+}

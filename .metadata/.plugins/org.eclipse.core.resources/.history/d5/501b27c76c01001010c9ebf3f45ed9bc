@@ -1,0 +1,20 @@
+
+Feature: Verify the Table feature functionalities
+ 
+	@TablesPage @Regression @Medium @UI
+  Scenario: Verify All The Lables Present In Table HomePage
+    Given User In Table Page
+    Then Verify The All Lables Present In Table Page
+    
+    @Test_UXP-1121
+    Scenario: Verify Columns Header Of The Table Page
+    Given User In Table Page
+    Then Verify Columns Header Of The Table Page
+    
+    @Test_UXP-1122
+    Scenario: Verify Dropdown Options Of New Table
+    Given User In Table Page
+    Then Verify Dropdown Options Of New Table
+  
+
+

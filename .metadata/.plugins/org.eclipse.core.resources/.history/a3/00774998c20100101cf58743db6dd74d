@@ -1,0 +1,35 @@
+package stepDefinitions;
+
+import java.io.IOException;
+
+import org.openqa.selenium.WebDriver;
+
+import com.aventstack.extentreports.gherkin.model.Scenario;
+
+import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
+import utils.TestContextSetup;
+
+public class Hooks {
+	
+	public TestContextSetup testContextSetup;
+	public WebDriver driver;
+	
+	public Hooks(TestContextSetup testContextSetup) {
+		this.testContextSetup = testContextSetup;
+	}
+	
+	@After
+	public void afterScenario() throws IOException {
+		
+		driver = testContextSetup.testBase.WebDriverManager();
+		driver.quit();
+	}
+	
+	@AfterStep
+	public void addScreenshot(Scenario scenario) {
+		
+		if(Scenario.is)
+	}
+
+}

@@ -1,0 +1,37 @@
+package utils;
+
+import java.io.File;
+import java.util.Map;
+
+import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonParser;
+
+public class PropertyHelper {
+	
+	
+	public static synchronized Map<String, String> readJsonElement(String fileName, 
+			String elementName) throws Exception{
+			String filePath = null;
+		   	StackTraceElement packagePath = null;
+		    StackTraceElement[] packageStackTraceArray = Thread.currentThread().getStackTrace();
+		    for (int i = 0; i < packageStackTraceArray.length; i++) {
+		    	if(packageStackTraceArray[i].toString().contains("com.ui.scipher")) {
+		    		packagePath = packageStackTraceArray[i];
+		    		break;
+		    	}
+			}
+		    String [] arrayPackageName = packagePath.toString().split("\\.");
+		    String packageName = arrayPackageName[3];		
+		    filePath = System.getProperty("user.dir") + File.separator+"src"+File.separator+
+					"main"+File.separator+"resources"+File.separator+ packageName+File.separator+fileName;	
+			JsonElement root = new JsonParser().parse(new FileReader(filePath));
+			JsonObject jsonObject = root.getAsJsonObject();		
+			JsonElement some = jsonObject.get(elementName);
+			JsonObject testData = some.getAsJsonObject();
+			Map<String, String> testDataMap = new HashMap<String, String>();
+			for (Map.Entry<String,JsonElement> entry : testData.entrySet()) {
+				testDataMap.put(entry.getKey().toString(), entry.getValue().getAsString());
+			}
+			return testDataMap;		
+		}
+
+}

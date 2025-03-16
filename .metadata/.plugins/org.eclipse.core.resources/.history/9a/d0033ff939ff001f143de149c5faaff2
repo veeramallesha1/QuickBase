@@ -1,0 +1,32 @@
+package stepDefinitions;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import pageObjects.TablesPage;
+import utils.TestContextSetup;
+
+public class StepDefinitions {
+	public WebDriver driver;
+	TestContextSetup textContextSetup;
+	TablesPage tablesPage;
+	
+	public StepDefinitions(TestContextSetup textContextSetup) {
+		
+		this.textContextSetup = textContextSetup;
+	}
+	@Given("user  in table page")
+	public void userInTablePage() throws InterruptedException {
+		tablesPage= new TablesPage(textContextSetup.driver);
+		tablesPage.userInTablePage();	
+		
+	}
+	@Then("verify the all lables present in table page")
+	public void verifyTheAllLablesPresentITablePage() throws InterruptedException {
+		tablesPage= new TablesPage(textContextSetup.driver);
+		tablesPage.verifyTheAllLablesPresentITablePage();		
+		
+	}
+
+}

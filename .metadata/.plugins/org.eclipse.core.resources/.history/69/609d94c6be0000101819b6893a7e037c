@@ -1,0 +1,11 @@
+{
+	"TablesPage": {
+		"newTable" : "+ New Table",
+		"searchTables" : "Search tables"
+	},
+	
+	"AnalyzePage":{
+		"userName":"User Name",
+		"passWord":"Password page"
+	}
+}
